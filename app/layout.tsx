@@ -6,6 +6,7 @@ import { Inter } from "next/font/google";
 import NavBar from "./NavBar";
 import { Container, Theme } from "@radix-ui/themes";
 import AuthProvider from "./auth/AuthProvider";
+import TanstackQueryProvider from "./TanstackQueryProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -23,12 +24,14 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className={inter.variable}>
-          <Theme appearance="light" accentColor="violet">
-            <NavBar />
-            <main className="p-5">
-              <Container>{children}</Container>
-            </main>
-          </Theme>
+          <TanstackQueryProvider>
+            <Theme appearance="light" accentColor="violet">
+              <NavBar />
+              <main className="p-5">
+                <Container>{children}</Container>
+              </main>
+            </Theme>
+          </TanstackQueryProvider>
         </body>
       </AuthProvider>
     </html>
