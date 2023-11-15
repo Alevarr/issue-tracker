@@ -7,7 +7,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { issueSchema } from "@/app/validationSchemas";
-import { z } from "zod";
 import { ErrorMessage, Spinner } from "@/app/components";
 import { Issue } from "@prisma/client";
 // import dynamic from "next/dynamic";
@@ -16,8 +15,7 @@ import { Issue } from "@prisma/client";
 // });
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
-
-type IssueFormData = z.infer<typeof issueSchema>;
+import { PostIssueBody as IssueFormData } from "@/app/api/_interfaces";
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const {
