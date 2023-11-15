@@ -8,16 +8,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
 const SelectAssignee = ({ issue }: { issue: Issue }) => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000, //60s
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
 
   if (isLoading) return <Skeleton height="1.5rem" />;
 
@@ -32,17 +23,19 @@ const SelectAssignee = ({ issue }: { issue: Issue }) => {
   //     fetchUsers();
   //   }, []);
 
+  const sendAssignee = (userId: string) => {
+    axios
+      .patch("/api/issues/" + issue.id, {
+        assignedToUserId: userId === "unassigned" ? null : userId,
+      })
+      .catch(() => toast.error("Could not apply changes."));
+  };
+
   return (
     <>
       <Select.Root
         defaultValue={issue.assignedToUserId || "unassigned"}
-        onValueChange={(userId) => {
-          axios
-            .patch("/api/issues/" + issue.id, {
-              assignedToUserId: userId === "unassigned" ? null : userId,
-            })
-            .catch(() => toast.error("Could not apply changes."));
-        }}
+        onValueChange={sendAssignee}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
@@ -60,6 +53,15 @@ const SelectAssignee = ({ issue }: { issue: Issue }) => {
       <Toaster />
     </>
   );
+};
+
+const useUsers = () => {
+  return useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000, //60s
+    retry: 3,
+  });
 };
 
 export default SelectAssignee;
