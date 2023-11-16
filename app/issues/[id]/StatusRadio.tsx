@@ -1,7 +1,7 @@
 "use client";
 
 import { Issue, Status } from "@prisma/client";
-import { Flex, RadioGroup, Text } from "@radix-ui/themes";
+import { Flex, Text, RadioGroup } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
