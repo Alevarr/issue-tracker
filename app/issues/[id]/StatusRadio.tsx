@@ -25,7 +25,10 @@ const StatusRadio = ({ issue }: Props) => {
   return (
     <>
       <RadioGroup.Root defaultValue={issue.status} onValueChange={sendStatus}>
-        <Flex gap="4">
+        <Flex
+          gap={{ initial: "4", sm: "1" }}
+          direction={{ initial: "row", sm: "column" }}
+        >
           {radios.map((radio) => (
             <Flex gap="1" align="center">
               <RadioGroup.Item value={radio.status} />
