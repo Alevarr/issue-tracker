@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Box, Button, Callout, TextField } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import axios from "axios";
@@ -32,7 +32,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const [isSubmitting, setSubmitting] = useState(false);
 
   return (
-    <div className="max-w-xl">
+    <Box className="max-w-xl">
       {error && (
         <Callout.Root color="red" className="mb-5">
           <Callout.Text>{error}</Callout.Text>
@@ -78,7 +78,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           Submit {isSubmitting && <Spinner />}
         </Button>
       </form>
-    </div>
+    </Box>
   );
 };
 
