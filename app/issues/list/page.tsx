@@ -6,6 +6,7 @@ import { Link, StatusBadge } from "../../components";
 import NextLink from "next/link";
 import { Issue, Status } from "@prisma/client";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
+import Pagination from "@/app/components/Pagination";
 
 const tableHeadersMap: {
   label: string;
@@ -28,12 +29,17 @@ const tableHeadersMap: {
 const IssuesPage = async ({
   searchParams,
 }: {
-  searchParams: { status: Status; orderBy: keyof Issue };
+  searchParams: {
+    status: Status;
+    orderBy: keyof Issue;
+    page: string;
+  };
 }) => {
   const statusEnum = ["OPEN", "IN_PROGRESS", "CLOSED"];
   const status = statusEnum.includes(searchParams.status)
     ? searchParams.status
     : undefined;
+  const where = { status };
 
   const orderBy = tableHeadersMap
     .map((header) => header.orderByValue)
@@ -41,10 +47,16 @@ const IssuesPage = async ({
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
+  const pageSize = 10;
+
+  const currentPage = parseInt(searchParams.page) || 1;
   const issues = await prisma.issue.findMany({
-    where: { status },
+    where,
     orderBy,
+    skip: (currentPage - 1) * pageSize,
+    take: pageSize,
   });
+  const itemsCount = await prisma.issue.count({ where });
   return (
     <>
       <IssueActions />
@@ -94,6 +106,11 @@ const IssuesPage = async ({
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        currentPage={currentPage}
+        itemCount={itemsCount}
+        pageSize={pageSize}
+      />
     </>
   );
 };
