@@ -52,7 +52,7 @@ const DeleteIssueButton = ({ issueId }: { issueId: number }) => {
         <AlertDialog.Content>
           <AlertDialog.Title>Error</AlertDialog.Title>
           <AlertDialog.Description>
-            Couldn't complete deletion.
+            Could not complete deletion.
           </AlertDialog.Description>
           <Button
             variant="soft"

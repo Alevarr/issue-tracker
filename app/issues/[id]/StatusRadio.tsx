@@ -30,7 +30,7 @@ const StatusRadio = ({ issue }: Props) => {
           direction={{ initial: "row", sm: "column" }}
         >
           {radios.map((radio) => (
-            <Flex gap="1" align="center">
+            <Flex gap="1" align="center" key={radio.status}>
               <RadioGroup.Item value={radio.status} />
               <Text>{radio.label}</Text>
             </Flex>
