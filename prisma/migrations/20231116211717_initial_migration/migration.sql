@@ -1,25 +1,15 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE `Issue` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `status` ENUM('OPEN', 'IN_PROGRESS', 'CLOSED') NOT NULL DEFAULT 'OPEN',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `assignedToUserId` VARCHAR(255) NULL,
 
-  - You are about to drop the `account` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `session` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `user` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE `account` DROP FOREIGN KEY `Account_userId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `session` DROP FOREIGN KEY `Session_userId_fkey`;
-
--- DropTable
-DROP TABLE `account`;
-
--- DropTable
-DROP TABLE `session`;
-
--- DropTable
-DROP TABLE `user`;
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `users` (
@@ -68,6 +58,23 @@ CREATE TABLE `sessions` (
     UNIQUE INDEX `sessions_session_token_key`(`session_token`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `VerificationRequest` (
+    `id` VARCHAR(191) NOT NULL,
+    `identifier` VARCHAR(191) NOT NULL,
+    `token` VARCHAR(191) NOT NULL,
+    `expires` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `VerificationRequest_token_key`(`token`),
+    UNIQUE INDEX `VerificationRequest_identifier_token_key`(`identifier`, `token`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `Issue` ADD CONSTRAINT `Issue_assignedToUserId_fkey` FOREIGN KEY (`assignedToUserId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `accounts` ADD CONSTRAINT `accounts_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
