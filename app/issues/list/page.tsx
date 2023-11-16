@@ -3,6 +3,7 @@ import prisma from "@/prisma/client";
 import { Flex } from "@radix-ui/themes";
 import IssueActions from "./IssueActions";
 import IssuesTable, { IssuQuery, tableHeadersOrderValues } from "./IssuesTable";
+import { Metadata } from "next";
 
 const IssuesPage = async ({ searchParams }: { searchParams: IssuQuery }) => {
   const statusEnum = ["OPEN", "IN_PROGRESS", "CLOSED"];
@@ -39,5 +40,10 @@ const IssuesPage = async ({ searchParams }: { searchParams: IssuQuery }) => {
 };
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - List",
+  description: "View all project issues",
+};
 
 export default IssuesPage;
