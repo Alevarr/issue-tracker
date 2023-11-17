@@ -16,4 +16,8 @@
   .nav-link {
     @apply text-zinc-500 hover:text-zinc-800 transition-colors
   }
+
+  .delete-button {
+    background-color: var(--accent-9);
+  }
 }
